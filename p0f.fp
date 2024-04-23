@@ -92,7 +92,10 @@ sig   = 16436
 ; Linux
 ; -----
 
-label = s:unix:Linux:3.11 and newer
+label = s:unix:Linux:5.x and newer
+sig   = *:64:0:*:mss*44,7:mss,sok,ts,nop,ws:df,id+:0
+
+label = s:unix:Linux:3.11 - 4.15
 sig   = *:64:0:*:mss*20,10:mss,sok,ts,nop,ws:df,id+:0
 sig   = *:64:0:*:mss*20,7:mss,sok,ts,nop,ws:df,id+:0
 
@@ -101,6 +104,7 @@ sig   = *:64:0:*:mss*10,4:mss,sok,ts,nop,ws:df,id+:0
 sig   = *:64:0:*:mss*10,5:mss,sok,ts,nop,ws:df,id+:0
 sig   = *:64:0:*:mss*10,6:mss,sok,ts,nop,ws:df,id+:0
 sig   = *:64:0:*:mss*10,7:mss,sok,ts,nop,ws:df,id+:0
+
 
 ; Fun fact: 2.6 with ws=7 seems to be really common for Amazon EC2, while 8 is
 ; common for Yahoo and Twitter. There seem to be some other (rare) uses, though,
@@ -151,6 +155,7 @@ sig   = 4:64:0:1430:mss*4,6:mss,sok,ts,nop,ws::0
 label = s:unix:Linux:(Android)
 sig   = *:64:0:*:mss*44,1:mss,sok,ts,nop,ws:df,id+:0
 sig   = *:64:0:*:mss*44,3:mss,sok,ts,nop,ws:df,id+:0
+sig   = *:64:0:*:65535,8:mss,sok,ts,nop,ws:df,id+:0
 
 ; Catch-all rules:
 
@@ -185,6 +190,26 @@ sig   = *:128:0:*:8192,0:mss,nop,nop,sok:df,id+:0
 sig   = *:128:0:*:8192,2:mss,nop,ws,nop,nop,sok:df,id+:0
 sig   = *:128:0:*:8192,8:mss,nop,ws,nop,nop,sok:df,id+:0
 sig   = *:128:0:*:8192,2:mss,nop,ws,sok,ts:df,id+:0
+
+
+
+label = s:win:Windows:Server 2016 Datacenter
+sig   = *:128:0:*:65535,3:mss,nop,ws,nop,nop,sok:df,id+,ecn:0
+
+label = s:win:Windows:Server 2019 Datacenter
+sig   = *:128:0:*:65535,8:mss,nop,ws,nop,nop,sok:df,id+,ecn:0
+
+label = s:win:Windows:Server 2022 Datacenter
+sig	= *:128:0:*:mss*46,8:mss,nop,ws,nop,nop,sok:df,id+,ecn:0
+
+label = s:win:Windows:10
+sig = *:128:0:*:8192,8:mss,nop,ws,nop,nop,sok:df,id+,ecn:0
+; A fresh windows 10 install matches the one below AND the windows XP one.
+sig = *:128:0:*:65535,8:mss,nop,ws,nop,nop,sok:df,id+:0
+
+label = s:win:Windows:10 or 11
+; The one directly below is taken from 22H2
+sig = *:128:0:*:mss*44,8:mss,nop,ws,nop,nop,sok:df,id+:0
 
 ; Robots with distinctive fingerprints:
 
@@ -231,7 +256,11 @@ sig   = *:64:0:*:65535,*:mss,nop,ws,nop,nop,ts,sok,eol+1:df,id+:0
 ; FreeBSD
 ; -------
 
-label = s:unix:FreeBSD:9.x or newer
+
+label = s:unix:FreeBSD:11.x, 12.x, 13.x and 14.x
+sig   = *:64:0:*:65535,6:mss,nop,ws,sok,ts:df:0
+
+label = s:unix:FreeBSD:9.x
 sig   = *:64:0:*:65535,6:mss,nop,ws,sok,ts:df,id+:0
 
 label = s:unix:FreeBSD:8.x
@@ -358,6 +387,26 @@ sig   = *:64:0:1460:mss*4,2:mss,sok,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,
 ; to get a full set of up to 8 signatures.
 
 
+label = s:unix:Linux:5.x
+sig  = *:64:0:*:mss*44,0:mss:df:0
+sig  = *:64:0:*:mss*44,0:mss,nop,nop,sok:df:0
+sig  = *:64:0:*:mss*44,7:mss,nop,ws:df:0
+sig  = *:64:0:*:mss*44,7:mss,nop,nop,sok,nop,ws:df:0
+sig  = *:64:0:*:mss*45,0:mss,nop,nop,ts:df:0
+sig  = *:64:0:*:mss*45,0:mss,sok,ts:df:0
+sig  = *:64:0:*:mss*45,7:mss,nop,nop,ts,nop,ws:df:0
+sig  = *:64:0:*:mss*45,7:mss,sok,ts,nop,ws:df:0
+
+label = s:unix:Linux:4.x
+sig  = *:64:0:*:mss*20,0:mss:df:0
+sig  = *:64:0:*:mss*20,0:mss,nop,nop,sok:df:0
+sig  = *:64:0:*:mss*20,7:mss,nop,ws:df:0
+sig  = *:64:0:*:mss*20,7:mss,nop,nop,sok,nop,ws:df:0
+sig  = *:64:0:*:mss*20,0:mss,nop,nop,ts:df:0
+sig  = *:64:0:*:mss*20,0:mss,sok,ts:df:0
+sig  = *:64:0:*:mss*20,7:mss,nop,nop,ts,nop,ws:df:0
+sig  = *:64:0:*:mss*20,7:mss,sok,ts,nop,ws:df:0
+
 label = s:unix:Linux:3.x
 sig   = *:64:0:*:mss*10,0:mss:df:0
 sig   = *:64:0:*:mss*10,0:mss,sok,ts:df:0
@@ -415,13 +464,30 @@ sig   = *:128:0:*:8192,0:mss,sok,ts:df,id+:0
 sig   = *:128:0:*:8192,8:mss,nop,ws:df,id+:0
 sig   = *:128:0:*:8192,0:mss,nop,nop,ts:df,id+:0
 sig   = *:128:0:*:8192,0:mss,nop,nop,sok:df,id+:0
-sig   = *:128:0:*:8192,8:mss,nop,ws,sok,ts:df,id+:0
+; The ones below might also match windows 10
 sig   = *:128:0:*:8192,8:mss,nop,ws,nop,nop,ts:df,id+:0
 sig   = *:128:0:*:8192,8:mss,nop,ws,nop,nop,sok:df,id+:0
+
+label = s:win:Windows:7, 8 or 10
+sig   = *:128:0:*:8192,8:mss,nop,ws,sok,ts:df,id+:0
+
+label = s:win:Windows:11
+sig   = *:128:0:*:mss*49,0:mss:df,id+:0
+sig   = *:128:0:*:mss*49,0:mss,nop,nop,sok:df,id+:0
+sig   = *:128:0:*:65535,8:mss,nop,ws:df,id+:0
+sig   = *:128:0:*:65535,8:mss,nop,ws,nop,nop,sok:df,id+:0
+sig   = *:128:0:*:mss*49,0:mss,nop,nop,ts:df,id+:0
+sig   = *:128:0:*:mss*49,0:mss,sok,ts:df,id+:0
+sig   = *:128:0:*:65535,8:mss,nop,ws,nop,nop,ts:df,id+:0
+sig   = *:128:0:*:65535,8:mss,nop,ws,sok,ts:df,id+:0
+
 
 ; -------
 ; FreeBSD
 ; -------
+
+label = s:unix:FreeBSD:11.x, 12.x, 13.x and 14.x
+sig   = *:64:0:*:65535,6:mss,nop,ws,sok,ts:df:0
 
 label = s:unix:FreeBSD:9.x
 sig   = *:64:0:*:65535,6:mss,nop,ws:df,id+:0
